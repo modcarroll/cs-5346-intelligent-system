@@ -2,6 +2,54 @@
 #include <string>
 #include <locale>
 #include <vector>
+#include <algorithm>
+#include <map>
+#include <iterator>
+
+std::string conclusion(int diagnosis) {
+  
+  // Conslusion List
+  std::map<int, std::string> poison;
+  std::map<int, std::string>::iterator iter;
+  iter = poison.begin();
+
+  poison.insert({3, "ricin"});
+  poison.insert({4, "anthrax"});
+  poison.insert({11, "chlordecone"});
+  poison.insert({12, "stychinine"});
+  poison.insert({14, "amatoxin"});
+  poison.insert({17, "rotenone"});
+  poison.insert({18, "sodium fluoracetate"});
+  poison.insert({19, "dioxin"});
+  poison.insert({21, "tetrodotoxin"});
+  poison.insert({22, "nitroprusside"});
+  poison.insert({23, "batrachotoxin"});
+  poison.insert({30, "methanol"});
+  poison.insert({31, "iodine"});
+  poison.insert({32, "ampetamine"});
+  poison.insert({33, "chlorine"});
+  poison.insert({34, "meethamphetamine"});
+  poison.insert({35, "formaldehyde"});
+  poison.insert({36, "ibuprofen"});
+  poison.insert({37, "isopropanol"});
+  poison.insert({39, "cyanide"});
+  poison.insert({47, "mercury"});
+  poison.insert({48, "arsenic"});
+  poison.insert({55, "benzodiaxepine"});
+  poison.insert({59, "cocaine"});
+  poison.insert({70, "ketamine"});
+  poison.insert({74, "organophosphates"});
+  poison.insert({79, "ecstasy"});
+  poison.insert({105, "antihistamine"});
+
+  // print result
+  std::string result;
+  iter = poison.find(diagnosis);
+  if (iter != poison.end()) result = poison.at(diagnosis);
+  else result = "unknown";
+
+  return result;
+  }
 
 std::string BuildKnowledgeBase(std::vector<std::string> symptoms) {
 
@@ -16,197 +64,56 @@ std::string BuildKnowledgeBase(std::vector<std::string> symptoms) {
 
   // backward chaining to determine the correct poison 
   std::string result = " "; 
-  int symptomCount = symptoms.size();  
+  int symptomCount = symptoms.size();
 
-  // diagnose ricin and anthrax
-  if (symptomCount == 2 && (symptoms[0] == "fever" || symptoms[1] == "fever")) {
-    if (symptoms[0] == "chest tightness" || symptoms[1] == "chest tightness") {
-      result = "ricin";
-      return result;
-    }
-    else if (symptoms[0] == "swollen neck" || symptoms[1] == "swollen neck") {
-      result = "anthrax";
-      return result;
-    }
-  }
+  // Variable List of Symptoms
+  std::map<std::string, int> symptomVar;
+  std::map<std::string, int>::iterator iter;
+  symptomVar["fever"] = 1;
+  symptomVar["chest tightness"] = 2;
+  symptomVar["swollen neck"] = 3;
+  symptomVar["vomiting"] = 4;
+  symptomVar["nausea"] = 5;
+  symptomVar["confusion"] = 6;
+  symptomVar["diziness"] = 7;
+  symptomVar["muscle contraction"] = 8;
+  symptomVar["abdominal pain"] = 9;
+  symptomVar["diarrhea"] = 10;
+  symptomVar["anxiety"] = 11;
+  symptomVar["blurred vision"] = 12;
+  symptomVar["pharyngeal swelling"] = 13;
+  symptomVar["seizure"] = 14;
+  symptomVar["throat pain"] = 15;
+  symptomVar["parathesia"] = 16;
+  symptomVar["irritation of skin"] = 17;
+  symptomVar["breathing problems"] = 18;
+  symptomVar["coma"] = 19;
+  symptomVar["hypothermia"] = 20;
+  symptomVar["paranoia"] = 21;
+  symptomVar["renal impairment"] = 22;
+  symptomVar["heart failure"] = 23;
+  symptomVar["mudriasis"] = 24;
+  symptomVar["excessive salivation"] = 25;
+  symptomVar["muscle weakness"] = 26; 
+  symptomVar["drowsiness"] = 27;
+  symptomVar["incontinence"] = 28;
+  symptomVar["agitation"] = 29;
+  symptomVar["hallucination"] = 30;
+  symptomVar["convulsion"] = 31;
+  symptomVar["lethargy"] = 32;
+  symptomVar["slurred speech"] = 33;
+  symptomVar["sore throat"] = 34;
+  symptomVar["sneezing"] = 35;
+  symptomVar["runny nose"] = 36;
+  symptomVar["nervous system depression"] = 37;
 
-  // diagnose chlordecone, carbon monoxide, fentanyl, and stychnine
-  if (symptomCount == 2 && (symptoms[0] == "vomiting" || symptoms[1] == "vomiting")) {
-    if (symptoms[0] == "nausea" || symptoms[1] == "nausea") {
-      result = "chlordecone";
-      return result;
-    }
-    else if (symptoms[0] == "confusion" || symptoms[1] == "confusion") {
-      result = "carbon monoxide";
-      return result;
-    }
-    else if (symptoms[0] == "diziness" || symptoms[1] == "diziness") {
-      result = "fentanyl";
-      return result;
-    }
-    else if (symptoms[0] == "muscle contraction" || symptoms[1] == "muscle contraction") {
-      result = "stychnine";
-      return result;
-    }
-  }
-
-  // diagnose sodium flouroacetate, digoxin, and nitroprusside
-  if (symptomCount == 3 && (symptoms[0] == "vomiting" || symptoms[1] == "vomiting" || symptoms[2] == "vomiting")) {
-    if (symptoms[0] == "nausea" || symptoms[1] == "nausea" || symptoms[2] == "nausea") {
-      if (symptoms[0] == "abdominal pain" || symptoms[1] == "abdominal pain" || symptoms[2] == "abdominal pain") {
-        result = "sodium fluroacetate";
-        return result;
-      }
-      else if (symptoms[0] == "diarrhea" || symptoms[1] == "diarrhea" || symptoms[2] == "diarrhea") {
-        result = "digoxin";
-        return result;
-      }
-    }
-    else if (symptoms[0] == "diziness" || symptoms[1] == "diziness" || symptoms[2] == "diziness") {
-      if (symptoms[0] == "anxiety" || symptoms[1] == "anxiety" || symptoms[2] == "anxiety") {
-        result = "nitroprusside";
-        return result;
-      }
-    }
-  }
- 
- // diagnose methanol, iodine, ampetamine, and chlorine
-  if (symptomCount == 4 && (symptoms[0] == "vomiting" || symptoms[1] == "vomiting" || symptoms[2] == "vomiting" || symptoms[3] == "vomiting")) {
-    if (symptoms[0] == "abominal pain" || symptoms[1] == "abdominal pain" || symptoms[2] == "abdominal pain" || symptoms[3] == "abdominal pain") {
-      if (symptoms[0] == "blurred vision" || symptoms[1] == "blurred vision" || symptoms[2] == "blurred vision" || symptoms[3] == "blurred vision") {
-        result = "methanol";
-        return result;
-      }
-      else if (symptoms[0] == "seizure" || symptoms[1] == "seizure" || symptoms[2] == "seizure" || symptoms[3] == "seizure") {
-        result = "ampetamine";
-        return result;
-      }
-      else if (symptoms[0] == "throat pain" || symptoms[1] == "throat pain" || symptoms[2] == "throat pain" || symptoms[3] == "throat pain") {
-        result = "chlorine";
-        return result;
-      }
-    }
-    else if (symptoms[0] == "diarrhea" || symptoms[1] == "diarrhea" || symptoms[2] == "diarrhea" || symptoms[3] == "diarrhea") {
-      if (symptoms[0] == "pharyngeal swelling" || symptoms[1] == "pharyngeal swelling" || symptoms[2] == "pharyngeal swelling" || symptoms[3] == "pharyngeal swelling") {
-        result = "iodine";
-        return result;
-      }
-    }
-  }
-  
-  // diagnose tetrodotoxin and amatoxin
-  if (symptomCount == 2 && (symptoms[0] == "nausea" || symptoms[1] == "nausea")) {
-    if (symptoms[0] == "parathesia" || symptoms[1] == "parathesia") {
-      result = "tetrodotoxin";
-      return result;
-    }
-    else if (symptoms[0] == "abdominal pain" || symptoms[1] == "abdominal pain") {
-      result = "amatoxin";
-      return result;
-    }
-  }
-  
-  // diagnose retenone and formaldehyde
-  if (symptomCount == 1 && symptoms[0] == "irritation of skin") {
-    result = "rotenone";
-    return result;
-  }
-  if (symptomCount == 2 && (symptoms[0] == "irritation of skin" || symptoms[1] == "irritation of skin")) {
-    if (symptoms[0] == "breathing problem" || symptoms[1] == "breathing problem") {
-      result = "formaldehyde";
-      return result;
-    }
-  }
-
-  // diagnose cyanide, ibuprofen, and methamphetamine
-  if (symptomCount == 2 && (symptoms[0] == "seizure" || symptoms[1] == "seizure")) {
-    if (symptoms[0] == "hypothermia" || symptoms[1] == "hypothermia") {
-      result = "methamphetamine";
-      return result;
-    }
-    else if (symptoms[0] == "renal impairment" || symptoms[1] == "renal impairment") {
-      result = "ibuprofen";
-      return result;
-    }
-  }
-  if (symptomCount == 3 && (symptoms[0] == "seizure" || symptoms[1] == "seizure" || symptoms[2] == "seizure")) {
-    if (symptoms[0] == "coma" || symptoms[1] == "coma" || symptoms[2] == "coma") {
-      if (symptoms[0] == "confusion" || symptoms[1] == "confusion" || symptoms[2] == "confusion") {
-        result = "cyanide";
-        return result;
-      }
-    }
-  }
-
-  // diagnose batrachotoxin
-  if (symptomCount == 1 && symptoms[0] == "heart failure") {
-    result = "batrachotoxin";
-    return result;
-  }
-
-  // diagnose ketamine and organophosphates
-  if (symptomCount == 3 && (symptoms[0] == "paranoia" || symptoms[1] == "paranoia" || symptoms[2] == "paranoia")) {
-    if (symptoms[0] == "mudiasis" || symptoms[1] == "mudriasis" || symptoms[2] == "mudriasis") {
-      result = "ketamine";
-      return result;
-    }
-    else if (symptoms[0] == "incontinence" || symptoms[1] == "incontinence" || symptoms[2] == "incontinence") {
-      result = "organophosphates";
-      return result; 
-    }
-  }
-      
-  // diganose mercury and arsenic
-  if (symptomCount == 2 && (symptoms[0] == "paranoia" || symptoms[1] == "paranoia")) {
-    if (symptoms[0] == "muscle weakness" || symptoms[1] == "muscle weakness") {
-      result = "mercury";
-      return result;
-    }
-    else if (symptoms[0] == "drowsiness" || symptoms[1] == "drowsiness") {
-      result = "arsenic";
-      return result;
-    }
-  }
-
-  // diagnose cocaine and ecstasy
-  if (symptomCount == 2 && (symptoms[0] == "agitation" || symptoms[1] == "agitation")) {
-    if (symptoms[0] == "hallucination" || symptoms[1] == "hallucination") {
-      result  = "cocaine";
-      return result;
-    }
-  }
-  if (symptomCount == 3 && (symptoms[0] == "agitation" || symptoms[1] == "agitation" || symptoms[2] == "agiation")) {
-    if (symptoms[0] == "coma" || symptoms[1] == "coma" || symptoms[2] == "coma") {
-      if (symptoms[0] == "convulsion" || symptoms[1] == "convulsion" || symptoms[2] == "convulsion") {
-        result = "ecstasy";
-        return result; 
-      }
-    }
-  }
-  
-  // diagnose isopropanol, benzodiaxepine, and antihistamine 
-  if (symptomCount == 1 && symptoms[0] == "nervous system depression") {
-    result = "isopropanol";
-    return result;
+  // find the position of diagnosis
+  int poisonID = 0;
+  for (int i = 0; i < symptomCount; i++) {
+    iter = symptomVar.find(symptoms[i]);
+    if (iter != symptomVar.end()) poisonID = poisonID + iter -> second;
   } 
-  if (symptomCount == 2 && (symptoms[0] == "lethargy" || symptoms[1] == "lethargy")) {
-    if (symptoms[0] == "slurred speech" || symptoms[1] == "slurred speech") {
-      result  = "benzodiaxepine";
-      return result;
-    }
-  }
-  if (symptomCount == 3 && (symptoms[0] == "sore throat" || symptoms[1] == "sore throat" || symptoms[2] == "sore throat")) {
-    if (symptoms[0] == "sneezing" || symptoms[1] == "sneezing" || symptoms[2] == "sneezing") {
-      if (symptoms[0] == "runny nose" || symptoms[1] == "runny nose" || symptoms[2] == "runny nose") {
-        result = "antihistamine";
-        return result;
-      }
-    }
-  }
-  
-  // no poison found  
-  std::cout << "COULD NOT IDENTIFY THE POISON!\n";
- 
+  result = conclusion(poisonID);
   return result;
 }
 
