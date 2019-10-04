@@ -49,7 +49,7 @@ void Treatment(std::string poison) {
     std::cout << poison;
     std::cout << " poisoning.\n";
     std::cout << "TREATMENT: Please treat with activated charcoal and induced vomiting." << std::endl;
-  } else if (poison == "benzodiazepine"){
+  } else if (poison == "benzodiaxepine"){
     std::cout << "DIAGNOSIS: ";
     std::cout << poison;
     std::cout << " poisoning.\n";

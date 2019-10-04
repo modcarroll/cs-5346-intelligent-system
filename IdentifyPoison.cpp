@@ -27,7 +27,6 @@ std::string conclusion(int diagnosis) {
   poison.insert({22, "nitroprusside"});
   poison.insert({23, "batrachotoxin"});
   poison.insert({30, "methanol"});
-  poison.insert({31, "iodine"});
   poison.insert({32, "amphetamine"});
   poison.insert({33, "chlorine"});
   poison.insert({34, "methamphetamine"});
@@ -37,8 +36,9 @@ std::string conclusion(int diagnosis) {
   poison.insert({39, "cyanide"});
   poison.insert({47, "mercury"});
   poison.insert({48, "arsenic"});
-  poison.insert({55, "benzodiaxepine"});
+  poison.insert({57, "iodine"});
   poison.insert({59, "cocaine"});
+  poison.insert({65, "benzodiaxepine"});
   poison.insert({70, "ketamine"});
   poison.insert({74, "organophosphates"});
   poison.insert({79, "ecstasy"});
@@ -47,16 +47,17 @@ std::string conclusion(int diagnosis) {
   // print result
   std::string result;
   iter = poison.find(diagnosis);
-  if (iter != poison.end()) result = poison.at(diagnosis);
+  if (iter != poison.end()) {
+    result = poison.at(diagnosis);
+  }
   else result = "unknown";
-
   return result;
   }
 
 std::string BuildKnowledgeBase(std::vector<std::string> symptoms) {
 
   // Just prints out entered symptoms to make sure they made it into this
-  std::cout << "\nMy entered symptoms: \n";
+  std::cout << "\n\nMy entered symptoms: \n";
   for (std::string i : symptoms )
   {
     std::cout << i;
@@ -83,7 +84,6 @@ std::string BuildKnowledgeBase(std::vector<std::string> symptoms) {
   symptomVar["diarrhea"] = 10;
   symptomVar["anxiety"] = 11;
   symptomVar["blurred vision"] = 12;
-  symptomVar["pharyngeal swelling"] = 13;
   symptomVar["seizure"] = 14;
   symptomVar["throat pain"] = 15;
   symptomVar["paresthesia"] = 16;
@@ -108,12 +108,16 @@ std::string BuildKnowledgeBase(std::vector<std::string> symptoms) {
   symptomVar["sneezing"] = 35;
   symptomVar["runny nose"] = 36;
   symptomVar["nervous system depression"] = 37;
+  symptomVar["pharyngeal swelling"] = 38;
 
   // find the position of diagnosis
   int poisonID = 0;
   for (int i = 0; i < symptomCount; i++) {
     iter = symptomVar.find(symptoms[i]);
-    if (iter != symptomVar.end()) poisonID = poisonID + iter -> second;
+    if (iter != symptomVar.end()) {
+      poisonID = poisonID + iter -> second;
+    }
+    else poisonID = 10000;    
   } 
   result = conclusion(poisonID);
   return result;
@@ -135,6 +139,6 @@ std::string Identify_Poison() {
   }
 
   std::string poison = BuildKnowledgeBase(symptoms);
-  std::cout << "RESULT :" << poison << "\n";
+  std::cout << "RESULT :" << poison << "\n\n";
   return poison;
 }
